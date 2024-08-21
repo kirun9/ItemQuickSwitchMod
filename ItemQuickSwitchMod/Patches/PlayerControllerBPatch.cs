@@ -47,10 +47,10 @@ internal class PlayerControllerBPatch
     )
     {
         if ((!__instance.IsOwner || !__instance.isPlayerControlled ||
-             __instance.IsServer && !__instance.isHostPlayerObject) && !__instance.isTestingPlayer) return;
+            __instance.IsServer && !__instance.isHostPlayerObject) && !__instance.isTestingPlayer) return;
 
-        var keyDown = Array.Find(CustomAction.AllActions, it =>
-            Keyboard.current[it.ConfigEntry.Value].wasPressedThisFrame);
+        var keyDown = Array.Find(CustomAction.AllActions, it => 
+             Keyboard.current[it.ConfigEntry.Value].wasPressedThisFrame);
 
         if (keyDown == null) return;
 
@@ -63,10 +63,23 @@ internal class PlayerControllerBPatch
                 PerformEmote(__instance, 2);
                 break;
             default:
-                StopEmotes(__instance);
-                if (SwitchItemSlots(__instance, keyDown.SlotNumber, ___timeSinceSwitchingSlots, ___throwingObject))
+                bool slotExist = false;
+                GameObject inventory = GameObject.Find("Systems/UI/Canvas/IngamePlayerHUD/Inventory");
+                for (int i = 0; i < inventory.transform.childCount; i++)
                 {
-                    ___timeSinceSwitchingSlots = 0f;
+                    Transform child = inventory.transform.GetChild(i);
+                     if (child.gameObject.name == "Slot" + keyDown.SlotNumber)
+                    {
+                        slotExist = true;
+                    }
+                }
+                if (slotExist)
+                {
+                    StopEmotes(__instance);
+                    if (SwitchItemSlots(__instance, keyDown.SlotNumber, ___timeSinceSwitchingSlots, ___throwingObject))
+                    {
+                     ___timeSinceSwitchingSlots = 0f;
+                    }
                 }
                 break;
         }
