@@ -50,7 +50,7 @@ internal class PlayerControllerBPatch
             __instance.IsServer && !__instance.isHostPlayerObject) && !__instance.isTestingPlayer) return;
 
         var keyDown = Array.Find(CustomAction.AllActions, it => 
-             Keyboard.current[it.ConfigEntry.Value].wasPressedThisFrame);
+            Keyboard.current[it.ConfigEntry.Value].wasPressedThisFrame);
 
         if (keyDown == null) return;
 
@@ -68,7 +68,7 @@ internal class PlayerControllerBPatch
                 for (int i = 0; i < inventory.transform.childCount; i++)
                 {
                     Transform child = inventory.transform.GetChild(i);
-                     if (child.gameObject.name == "Slot" + keyDown.SlotNumber)
+                    if (child.gameObject.name == "Slot" + keyDown.SlotNumber)
                     {
                         slotExist = true;
                     }
